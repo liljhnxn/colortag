@@ -1,9 +1,9 @@
 import { Address } from "viem";
 
-// Deployed ColorTag contract address on Botchain Testnet (Chain ID 968)
+// Deployed ColorTag contract address on Botchain Mainnet (Chain ID 677)
 export const COLORTAG_CONTRACT_ADDRESS: Address = (
   process.env.NEXT_PUBLIC_COLORTAG_CONTRACT_ADDRESS ||
-  "0xC67ccf21A1106937496Bcac1F1a1e1071F103922"
+  "0x15fF6FfA7005A2fE2eF27cd82D8cb1B02ae9Dc84"
 ) as Address;
 
 export const COLORTAG_ABI = [

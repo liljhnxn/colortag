@@ -6,7 +6,7 @@
 
 ## 📖 Overview
 
-ColorTag provides a simple, verifiable on-chain identity mechanism. Users select a color that represents them (e.g. `#8B5CF6`) and commit it to their wallet address on the **Botchain Testnet**. Anyone in the world can look up any public address to inspect the color chosen by that wallet owner.
+ColorTag provides a simple, verifiable on-chain identity mechanism. Users select a color that represents them (e.g. `#8B5CF6`) and commit it to their wallet address on **Botchain Mainnet**. Anyone in the world can look up any public address to inspect the color chosen by that wallet owner.
 
 - **Zero backend:** Pure Web3 architecture communicating directly with the smart contract.
 - **Zero databases:** State is stored immutably on-chain.
@@ -16,10 +16,10 @@ ColorTag provides a simple, verifiable on-chain identity mechanism. Users select
 
 ## ✨ Features
 
-- **Personal On-Chain Identity:** Associate your Ethereum-compatible wallet address with any valid 6-digit hex color (`#RRGGBB`).
+- **Personal On-Chain Identity:** Associate your EVM wallet address with any valid 6-digit hex color (`#RRGGBB`).
 - **Real-Time Live Preview:** Instant visual feedback with ambient glow, badge previews, and live hex validation as you interact with the color picker.
 - **Universal Address Lookup:** Enter any EVM wallet address to view their assigned on-chain color or discover if they have yet to tag themselves.
-- **Botchain Testnet Ready:** Pre-configured for Botchain Testnet (Chain ID `968`), with network detection and automatic chain-switching prompts.
+- **Botchain Mainnet Native:** Configured for Botchain Mainnet (Chain ID `677`), with network detection and automatic chain-switching prompts.
 - **Secure Validation:** Solidity smart contract strictly validates color formats (`#` prefix + 6 hexadecimal characters `0-9`, `a-f`, `A-F`), preventing corrupt data.
 - **Event-Driven Updates:** Emits `ColorSaved(address indexed user, string color)` on updates, allowing instant frontend state refreshes.
 
@@ -28,31 +28,32 @@ ColorTag provides a simple, verifiable on-chain identity mechanism. Users select
 ## 🛠️ Technology Stack
 
 - **Frontend:** [Next.js 14](https://nextjs.org/) (App Router), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/)
-- **Web3 Integrations:** [Wagmi v2/v3](https://wagmi.sh/), [Viem](https://viem.sh/), [@tanstack/react-query](https://tanstack.com/query)
+- **Web3 Integrations:** [Wagmi](https://wagmi.sh/), [Viem](https://viem.sh/), [@tanstack/react-query](https://tanstack.com/query)
 - **Smart Contract:** [Solidity ^0.8.24](https://soliditylang.org/)
 - **Development & Testing:** [Hardhat](https://hardhat.org/) with Mocha & Chai
 - **Icons:** [Lucide React](https://lucide.dev/)
 
 ---
 
-## 🌐 Network Configuration
+## 🌐 Network Configuration (Mainnet)
 
-ColorTag runs on **Botchain Testnet**:
+ColorTag runs live on **Botchain Mainnet**:
 
 | Parameter | Value |
 | :--- | :--- |
-| **Network Name** | Botchain Testnet |
-| **Chain ID** | `968` (`0x3c8`) |
-| **RPC URL** | [https://rpc.bohr.life](https://rpc.bohr.life) |
-| **Block Explorer** | [https://scan.bohr.life](https://scan.bohr.life) |
-| **Native Currency** | BOT |
+| **Network Name** | Botchain Mainnet |
+| **Chain ID** | `677` (`0x2a5`) |
+| **RPC URL** | [https://rpc.botchain.ai](https://rpc.botchain.ai) |
+| **Block Explorer** | [https://scan.botchain.ai](https://scan.botchain.ai) |
+| **Native Currency** | BOT (Total Supply: 150 Million) |
+| **Live Contract Address** | [`0x15fF6FfA7005A2fE2eF27cd82D8cb1B02ae9Dc84`](https://scan.botchain.ai/address/0x15fF6FfA7005A2fE2eF27cd82D8cb1B02ae9Dc84) |
 
 ---
 
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
-- **Node.js**: v18+ (tested on v20+ and v25+)
+- **Node.js**: v18+
 - **npm** or **pnpm** / **yarn**
 - A browser wallet (e.g., MetaMask, Rabby, Brave Wallet)
 
@@ -66,22 +67,17 @@ npm install
 ```
 
 ### 3. Environment Configuration
-Copy the `.env.example` file to create your `.env` file:
-
-```bash
-cp .env.example .env
-```
-
 Contents of `.env`:
 ```env
-# Private key for deploying the smart contract to Botchain Testnet
+# Private key for deploying the smart contract to Botchain Mainnet
 PRIVATE_KEY="your_private_key_here"
 
-# Botchain Testnet RPC URL
-BOTCHAIN_RPC_URL="https://rpc.bohr.life"
+# Botchain Mainnet RPC URL
+BOTCHAIN_MAINNET_RPC_URL="https://rpc.botchain.ai"
+BOTCHAIN_RPC_URL="https://rpc.botchain.ai"
 
-# Deployed ColorTag contract address on Botchain Testnet
-NEXT_PUBLIC_COLORTAG_CONTRACT_ADDRESS="0xC67ccf21A1106937496Bcac1F1a1e1071F103922"
+# Deployed ColorTag contract address on Botchain Mainnet
+NEXT_PUBLIC_COLORTAG_CONTRACT_ADDRESS="0x15fF6FfA7005A2fE2eF27cd82D8cb1B02ae9Dc84"
 ```
 
 ---
@@ -105,39 +101,20 @@ The test suite covers:
 
 ---
 
-## 📦 Deploying the Smart Contract
+## 📦 Smart Contract Deployment
 
-### Deploying to Botchain Testnet:
-1. Ensure your deployer wallet on Botchain Testnet has some `BOT` testnet tokens for gas.
-2. Put your private key into `.env`:
-   ```env
-   PRIVATE_KEY="0xabcdef..."
-   ```
-3. Run the automated deployment script:
-   ```bash
-   npm run deploy:testnet
-   ```
-4. The script will output the deployed contract address and BohrScan block explorer link:
-   ```text
-   ====================================================
-   ColorTag deployed successfully!
-   Contract Address: 0x1234567890abcdef1234567890abcdef12345678
-   Network: botchainTestnet
-   Explorer: https://scan.bohr.life/address/0x1234...
-   ====================================================
-   ```
-
-### 5. Verifying the Smart Contract on BohrScan
-To verify the contract source code on BohrScan block explorer:
 ```bash
-npm run verify:testnet 0xC67ccf21A1106937496Bcac1F1a1e1071F103922
+npm run deploy:mainnet
 ```
 
-### 6. Configuring the Frontend with the Contract Address
-Copy the deployed address into `.env.local` (or update `src/config/contract.ts`):
-
-```env
-NEXT_PUBLIC_COLORTAG_CONTRACT_ADDRESS="0xYourDeployedContractAddress"
+Outputs:
+```text
+====================================================
+ColorTag deployed successfully!
+Contract Address: 0x15fF6FfA7005A2fE2eF27cd82D8cb1B02ae9Dc84
+Network: botchainMainnet (Chain ID: 677)
+Explorer: https://scan.botchain.ai/address/0x15fF6FfA7005A2fE2eF27cd82D8cb1B02ae9Dc84
+====================================================
 ```
 
 ---
@@ -152,33 +129,20 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser:
 1. Connect your Web3 wallet (MetaMask, Rabby, etc.).
-2. If your wallet is on another network, click **"Switch to Botchain"** in the header.
+2. If your wallet is on another network, click **"Switch to Botchain Mainnet"** in the header.
 3. Pick a color or enter a custom hex code.
 4. Click **"Save My Color"** to execute the on-chain transaction.
-5. Once confirmed, view your transaction directly on BohrScan.
+5. Once confirmed, view your transaction directly on [BotchainScan](https://scan.botchain.ai).
 6. Use the **"Wallet Lookup"** section to search any wallet address on-chain.
 
 ---
 
 ## 🏗️ Production Build
 
-Verify that the production build compiles without any errors:
-
 ```bash
 npm run build
 npm run start
 ```
-
----
-
-## ☁️ Deploying to Vercel
-
-1. Push your code to a GitHub / GitLab / Bitbucket repository.
-2. Import the project into [Vercel](https://vercel.com/).
-3. Framework Preset: **Next.js**.
-4. In **Environment Variables**, add:
-   - `NEXT_PUBLIC_COLORTAG_CONTRACT_ADDRESS`: The deployed contract address on Botchain Testnet.
-5. Click **Deploy**.
 
 ---
 

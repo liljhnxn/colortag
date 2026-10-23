@@ -5,12 +5,12 @@ import { Providers } from "./providers";
 export const metadata: Metadata = {
   title: "ColorTag | Your Wallet. Your Color.",
   description:
-    "Choose a color that represents you and save it on-chain with ColorTag on the Botchain Testnet.",
+    "Choose a color that represents you and save it on-chain with ColorTag on Botchain Mainnet.",
   keywords: ["ColorTag", "Web3", "Botchain", "Ethereum", "dApp", "Wallet Identity"],
   authors: [{ name: "ColorTag" }],
   openGraph: {
     title: "ColorTag | Your Wallet. Your Color.",
-    description: "Save your personal color identity on-chain on Botchain Testnet.",
+    description: "Save your personal color identity on-chain on Botchain Mainnet.",
     type: "website",
   },
 };

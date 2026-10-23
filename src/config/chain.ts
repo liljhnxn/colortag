@@ -1,15 +1,15 @@
 import { defineChain } from "viem";
 
 /**
- * Official Botchain Testnet definition
- * Chain ID: 968
- * RPC URL: https://rpc.bohr.life
- * Explorer: https://scan.bohr.life
- * Native currency: BOT
+ * Official Botchain Mainnet definition
+ * Chain ID: 677
+ * RPC URL: https://rpc.botchain.ai
+ * Explorer: https://scan.botchain.ai
+ * Native currency: BOT (Total Supply: 150 Million)
  */
-export const botchainTestnet = defineChain({
-  id: 968,
-  name: "Botchain Testnet",
+export const botchainMainnet = defineChain({
+  id: 677,
+  name: "Botchain Mainnet",
   nativeCurrency: {
     decimals: 18,
     name: "BOT",
@@ -17,17 +17,19 @@ export const botchainTestnet = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ["https://rpc.bohr.life"],
+      http: ["https://rpc.botchain.ai"],
     },
     public: {
-      http: ["https://rpc.bohr.life"],
+      http: ["https://rpc.botchain.ai"],
     },
   },
   blockExplorers: {
     default: {
-      name: "BohrScan",
-      url: "https://scan.bohr.life",
+      name: "BotchainScan",
+      url: "https://scan.botchain.ai",
     },
   },
-  testnet: true,
+  testnet: false,
 });
+
+export const activeChain = botchainMainnet;

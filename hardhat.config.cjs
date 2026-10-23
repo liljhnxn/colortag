@@ -14,25 +14,27 @@ module.exports = {
       },
     },
   },
+  defaultNetwork: "botchainMainnet",
   networks: {
     hardhat: {},
-    botchainTestnet: {
-      url: process.env.BOTCHAIN_RPC_URL || "https://rpc.bohr.life",
-      chainId: 968,
+    botchainMainnet: {
+      url: process.env.BOTCHAIN_MAINNET_RPC_URL || process.env.BOTCHAIN_RPC_URL || "https://rpc.botchain.ai",
+      chainId: 677,
+      gasPrice: 20000000000, // 20 gwei (network minimum to minimize gas spend)
       accounts: PRIVATE_KEY ? [PRIVATE_KEY.startsWith("0x") ? PRIVATE_KEY : `0x${PRIVATE_KEY}`] : [],
     },
   },
   etherscan: {
     apiKey: {
-      botchainTestnet: "placeholder",
+      botchainMainnet: "placeholder",
     },
     customChains: [
       {
-        network: "botchainTestnet",
-        chainId: 968,
+        network: "botchainMainnet",
+        chainId: 677,
         urls: {
-          apiURL: "https://scan.bohr.life/api",
-          browserURL: "https://scan.bohr.life",
+          apiURL: "https://scan.botchain.ai/api",
+          browserURL: "https://scan.botchain.ai",
         },
       },
     ],

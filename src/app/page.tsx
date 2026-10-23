@@ -24,8 +24,10 @@ import {
   ArrowRight,
   ShieldCheck,
   Check,
+  Globe,
+  Layers,
 } from "lucide-react";
-import { botchainTestnet } from "../config/chain";
+import { botchainMainnet } from "../config/chain";
 import {
   COLORTAG_ABI,
   COLORTAG_CONTRACT_ADDRESS,
@@ -74,7 +76,7 @@ export default function Home() {
     );
   }, []);
 
-  const isWrongChain = isConnected && chain?.id !== botchainTestnet.id;
+  const isWrongChain = isConnected && chain?.id !== botchainMainnet.id;
 
   // Read current connected wallet's saved color
   const {
@@ -164,7 +166,7 @@ export default function Home() {
 
     if (!isContractConfigured) {
       setColorError(
-        "ColorTag contract address is not configured yet. Please deploy the contract to Botchain Testnet and set NEXT_PUBLIC_COLORTAG_CONTRACT_ADDRESS."
+        "ColorTag contract address is not configured. Please set NEXT_PUBLIC_COLORTAG_CONTRACT_ADDRESS."
       );
       return;
     }
@@ -204,8 +206,8 @@ export default function Home() {
     setLookupLoading(true);
     try {
       const publicClient = createPublicClient({
-        chain: botchainTestnet,
-        transport: http("https://rpc.bohr.life"),
+        chain: botchainMainnet,
+        transport: http("https://rpc.botchain.ai"),
       });
 
       const [hasColor, color] = await Promise.all([
@@ -302,13 +304,13 @@ export default function Home() {
             {isWrongChain && (
               <button
                 id="switch-network-btn"
-                onClick={() => switchChain({ chainId: botchainTestnet.id })}
+                onClick={() => switchChain({ chainId: botchainMainnet.id })}
                 disabled={isSwitchingChain}
                 className="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 transition-colors"
               >
                 <AlertCircle className="w-3.5 h-3.5" />
                 <span>
-                  {isSwitchingChain ? "Switching..." : "Switch to Botchain"}
+                  {isSwitchingChain ? "Switching..." : "Switch to Botchain Mainnet"}
                 </span>
               </button>
             )}
@@ -317,9 +319,27 @@ export default function Home() {
             {isConnected && !isWrongChain && (
               <div className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Botchain (968)</span>
+                <span>Botchain Mainnet (677)</span>
               </div>
             )}
+
+            {/* Mainnet Explorer Direct Link */}
+            <a
+              id="header-mainnet-explorer-btn"
+              href={`https://scan.botchain.ai/address/${COLORTAG_CONTRACT_ADDRESS}`}
+              target="_blank"
+              rel="noreferrer"
+              className="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-medium bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10 hover:text-white transition-all shadow-sm"
+              title="View ColorTag Contract on Botchain Mainnet Explorer"
+            >
+              <img
+                src="/botchain-logo.png"
+                alt="BOT Chain"
+                className="w-4 h-4 rounded-sm object-contain"
+              />
+              <span>Mainnet Explorer</span>
+              <ExternalLink className="w-3.5 h-3.5 text-purple-400" />
+            </a>
 
             {/* Wallet Connect / Disconnect */}
             {isConnected && address ? (
@@ -404,6 +424,27 @@ export default function Home() {
           <p className="text-slate-400 text-base sm:text-lg">
             Choose a color that represents you and save it on-chain.
           </p>
+
+          {/* Live Mainnet Contract Pill with Explorer Link */}
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-2 text-xs">
+            <a
+              id="hero-contract-explorer-link"
+              href={`https://scan.botchain.ai/address/${COLORTAG_CONTRACT_ADDRESS}`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-purple-500/10 text-purple-300 border border-purple-500/25 hover:bg-purple-500/20 hover:border-purple-500/40 transition-all font-mono shadow-sm group"
+              title="Open Contract on Botchain Mainnet Explorer"
+            >
+              <img
+                src="/botchain-logo.png"
+                alt="BOT Chain"
+                className="w-3.5 h-3.5 rounded-sm object-contain"
+              />
+              <span className="text-slate-400 font-sans">Mainnet Contract:</span>
+              <span className="text-white font-semibold">{COLORTAG_CONTRACT_ADDRESS.slice(0, 6)}...{COLORTAG_CONTRACT_ADDRESS.slice(-4)}</span>
+              <ExternalLink className="w-3.5 h-3.5 text-purple-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </a>
+          </div>
         </div>
 
         {/* Contract Configuration Warning if not deployed */}
@@ -412,11 +453,10 @@ export default function Home() {
             <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
             <div className="space-y-1">
               <p className="font-semibold text-amber-300">
-                Contract Deployment Notice
+                Contract Notice
               </p>
               <p className="text-amber-200/90 text-xs sm:text-sm">
-                The smart contract is ready to deploy to Botchain Testnet (Chain ID 968).
-                Run <code className="px-1.5 py-0.5 bg-black/40 rounded text-amber-300 font-mono text-xs">npm run deploy:testnet</code> with your private key in <code className="px-1.5 py-0.5 bg-black/40 rounded text-amber-300 font-mono text-xs">.env</code>, then set <code className="px-1.5 py-0.5 bg-black/40 rounded text-amber-300 font-mono text-xs">NEXT_PUBLIC_COLORTAG_CONTRACT_ADDRESS</code> in <code className="px-1.5 py-0.5 bg-black/40 rounded text-amber-300 font-mono text-xs">.env.local</code>.
+                Please ensure <code className="px-1.5 py-0.5 bg-black/40 rounded text-amber-300 font-mono text-xs">NEXT_PUBLIC_COLORTAG_CONTRACT_ADDRESS</code> is configured in your environment.
               </p>
             </div>
           </div>
@@ -554,7 +594,7 @@ export default function Home() {
               ) : isWrongChain ? (
                 <button
                   id="save-color-switch-chain-btn"
-                  onClick={() => switchChain({ chainId: botchainTestnet.id })}
+                  onClick={() => switchChain({ chainId: botchainMainnet.id })}
                   disabled={isSwitchingChain}
                   className="w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center space-x-2 bg-amber-600 hover:bg-amber-500 text-white shadow-lg shadow-amber-600/20 transition-all"
                 >
@@ -562,7 +602,7 @@ export default function Home() {
                   <span>
                     {isSwitchingChain
                       ? "Switching Network..."
-                      : "Switch to Botchain Testnet (968)"}
+                      : "Switch to Botchain Mainnet (677)"}
                   </span>
                 </button>
               ) : (
@@ -640,12 +680,12 @@ export default function Home() {
                         )}
                       </button>
                       <a
-                        href={`https://scan.bohr.life/tx/${txHash}`}
+                        href={`https://scan.botchain.ai/tx/${txHash}`}
                         target="_blank"
                         rel="noreferrer"
                         className="flex items-center space-x-1 text-emerald-400 hover:text-emerald-300 hover:underline"
                       >
-                        <span>View Explorer</span>
+                        <span>View Mainnet Explorer</span>
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     </div>
@@ -749,7 +789,7 @@ export default function Home() {
             <div>
               <h2 className="text-xl font-bold text-white">Wallet Lookup</h2>
               <p className="text-xs text-slate-400">
-                Look up any address on Botchain Testnet to see their saved color
+                Look up any address on Botchain Mainnet to see their saved color
               </p>
             </div>
           </div>
@@ -834,12 +874,12 @@ export default function Home() {
                       Copy to Picker
                     </button>
                     <a
-                      href={`https://scan.bohr.life/address/${lookupResult.searchedAddress}`}
+                      href={`https://scan.botchain.ai/address/${lookupResult.searchedAddress}`}
                       target="_blank"
                       rel="noreferrer"
                       className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-semibold flex items-center space-x-1.5 transition-all"
                     >
-                      <span>Explorer</span>
+                      <span>Mainnet Explorer</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>
@@ -854,7 +894,7 @@ export default function Home() {
                   </h3>
                   <p className="text-xs text-slate-400 max-w-md mx-auto">
                     This wallet owner has not saved a color identity on Botchain
-                    Testnet yet.
+                    Mainnet yet.
                   </p>
                   <p className="text-xs font-mono text-slate-500 pt-1">
                     {lookupResult.searchedAddress}
@@ -865,34 +905,146 @@ export default function Home() {
           )}
         </div>
 
-        {/* Network & Infrastructure Footer Info Card */}
-        <div className="glass-panel p-6 rounded-2xl border border-white/[0.06] text-xs text-slate-400 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center space-x-3">
-            <span className="w-2.5 h-2.5 rounded-full bg-purple-400 animate-ping" />
-            <span>
-              Network: <strong className="text-slate-200">Botchain Testnet</strong> • Chain ID: <strong className="text-slate-200">968</strong> • Currency: <strong className="text-slate-200">BOT</strong>
-            </span>
+        {/* BOT Chain Ecosystem & Infrastructure Section */}
+        <div className="glass-panel p-6 sm:p-10 rounded-3xl border border-white/[0.08] relative overflow-hidden space-y-8">
+          {/* Ambient background glow */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-white/[0.08] pb-6">
+            {/* BOT Chain Logo & Name */}
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 rounded-2xl p-[1px] bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-400 shadow-lg shadow-emerald-500/20 shrink-0">
+                <div className="w-full h-full bg-slate-950 rounded-[15px] flex items-center justify-center overflow-hidden p-1.5">
+                  <img
+                    src="/botchain-logo.png"
+                    alt="BOT Chain Logo"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center space-x-2">
+                  <h3 className="text-xl font-bold text-white tracking-tight">
+                    BOT Chain
+                  </h3>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                    Mainnet (Chain ID 677)
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400">
+                  The Decentralized EVM Blockchain for Autonomous AI Agents & Web3
+                </p>
+              </div>
+            </div>
+
+            {/* Required Links: BOT Chain Website & BOT Chain Explorer */}
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                id="botchain-website-link"
+                href="https://botchain.ai"
+                target="_blank"
+                rel="noreferrer"
+                className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 text-xs font-semibold flex items-center space-x-2.5 transition-all hover:scale-[1.02] shadow-sm group"
+              >
+                <img
+                  src="/botchain-logo.png"
+                  alt="BOT Chain"
+                  className="w-5 h-5 rounded object-contain group-hover:scale-105 transition-transform"
+                />
+                <span>BOT Chain Website</span>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+              </a>
+
+              <a
+                id="botchain-explorer-link"
+                href="https://scan.botchain.ai"
+                target="_blank"
+                rel="noreferrer"
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600/20 via-purple-600/20 to-indigo-600/20 hover:from-emerald-600/30 hover:to-indigo-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold flex items-center space-x-2.5 transition-all hover:scale-[1.02] shadow-sm group"
+              >
+                <img
+                  src="/botchain-logo.png"
+                  alt="BOT Chain"
+                  className="w-5 h-5 rounded object-contain group-hover:scale-105 transition-transform"
+                />
+                <span>BOT Chain Explorer</span>
+                <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+              </a>
+            </div>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <a
-              href="https://rpc.bohr.life"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-purple-400 transition-colors"
-            >
-              RPC Endpoint
-            </a>
-            <span>•</span>
-            <a
-              href="https://scan.bohr.life"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-purple-400 transition-colors flex items-center space-x-1"
-            >
-              <span>BohrScan Explorer</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
+          {/* Network Specs Cards */}
+          <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div className="p-3.5 rounded-xl bg-slate-900/50 border border-white/5 space-y-1">
+              <span className="text-[11px] text-slate-400 font-medium uppercase tracking-wider">
+                Network
+              </span>
+              <p className="text-slate-200 font-semibold font-mono">
+                BOT Chain Mainnet
+              </p>
+            </div>
+            <div className="p-3.5 rounded-xl bg-slate-900/50 border border-white/5 space-y-1">
+              <span className="text-[11px] text-slate-400 font-medium uppercase tracking-wider">
+                Chain ID
+              </span>
+              <p className="text-slate-200 font-semibold font-mono">677</p>
+            </div>
+            <div className="p-3.5 rounded-xl bg-slate-900/50 border border-white/5 space-y-1">
+              <span className="text-[11px] text-slate-400 font-medium uppercase tracking-wider">
+                Native Token
+              </span>
+              <p className="text-slate-200 font-semibold font-mono">
+                BOT (150M Supply)
+              </p>
+            </div>
+            <div className="p-3.5 rounded-xl bg-slate-900/50 border border-white/5 space-y-1">
+              <span className="text-[11px] text-slate-400 font-medium uppercase tracking-wider">
+                Contract
+              </span>
+              <a
+                href={`https://scan.botchain.ai/address/${COLORTAG_CONTRACT_ADDRESS}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-purple-400 hover:text-purple-300 hover:underline font-mono truncate block"
+                title={COLORTAG_CONTRACT_ADDRESS}
+              >
+                {COLORTAG_CONTRACT_ADDRESS.slice(0, 6)}...{COLORTAG_CONTRACT_ADDRESS.slice(-4)}
+              </a>
+            </div>
+          </div>
+
+          {/* Bottom Copyright & Ecosystem Disclaimer */}
+          <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-white/[0.05] gap-2">
+            <p>© {new Date().getFullYear()} ColorTag. Built for the BOT Chain Ecosystem.</p>
+            <div className="flex items-center space-x-4 text-slate-400">
+              <a
+                href="https://botchain.ai"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-purple-300 transition-colors"
+              >
+                botchain.ai
+              </a>
+              <span>•</span>
+              <a
+                href="https://scan.botchain.ai"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-purple-300 transition-colors"
+              >
+                scan.botchain.ai
+              </a>
+              <span>•</span>
+              <a
+                href="https://rpc.botchain.ai"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-purple-300 transition-colors"
+              >
+                rpc.botchain.ai
+              </a>
+            </div>
           </div>
         </div>
       </main>
