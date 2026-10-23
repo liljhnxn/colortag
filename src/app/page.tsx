@@ -132,6 +132,25 @@ export default function Home() {
     }
   }, [isConfirmed, refetchConnectedColor, refetchConnectedHasColor]);
 
+  // Purge any stale testnet contract addresses from browser storage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const keysToRemove = [
+        "colortag_contract_address",
+        "colortag_testnet_address",
+        "contractAddress",
+        "deployedContract",
+      ];
+      keysToRemove.forEach((key) => {
+        try {
+          localStorage.removeItem(key);
+        } catch {
+          // ignore storage errors
+        }
+      });
+    }
+  }, []);
+
   // Sync color picker with text input
   const handleColorChange = (newColor: string) => {
     setSelectedColor(newColor.toUpperCase());
@@ -425,23 +444,23 @@ export default function Home() {
             Choose a color that represents you and save it on-chain.
           </p>
 
-          {/* Live Mainnet Contract Pill with Explorer Link */}
+          {/* Mainnet Explorer Button */}
           <div className="pt-2 flex flex-wrap items-center justify-center gap-2 text-xs">
             <a
               id="hero-contract-explorer-link"
               href={`https://scan.botchain.ai/address/${COLORTAG_CONTRACT_ADDRESS}`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-purple-500/10 text-purple-300 border border-purple-500/25 hover:bg-purple-500/20 hover:border-purple-500/40 transition-all font-mono shadow-sm group"
-              title="Open Contract on Botchain Mainnet Explorer"
+              className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-purple-500/10 text-purple-300 border border-purple-500/25 hover:bg-purple-500/20 hover:border-purple-500/40 transition-all font-medium shadow-sm group"
+              title="Open Verified Contract on Botchain Mainnet Explorer"
             >
               <img
                 src="/botchain-logo.png"
                 alt="BOT Chain"
-                className="w-3.5 h-3.5 rounded-sm object-contain"
+                className="w-4 h-4 rounded-sm object-contain"
               />
-              <span className="text-slate-400 font-sans">Mainnet Contract:</span>
-              <span className="text-white font-semibold">{COLORTAG_CONTRACT_ADDRESS.slice(0, 6)}...{COLORTAG_CONTRACT_ADDRESS.slice(-4)}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-white font-semibold">Botchain Mainnet Explorer</span>
               <ExternalLink className="w-3.5 h-3.5 text-purple-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </a>
           </div>
@@ -1000,16 +1019,17 @@ export default function Home() {
             </div>
             <div className="p-3.5 rounded-xl bg-slate-900/50 border border-white/5 space-y-1">
               <span className="text-[11px] text-slate-400 font-medium uppercase tracking-wider">
-                Contract
+                Explorer
               </span>
               <a
                 href={`https://scan.botchain.ai/address/${COLORTAG_CONTRACT_ADDRESS}`}
                 target="_blank"
                 rel="noreferrer"
-                className="text-purple-400 hover:text-purple-300 hover:underline font-mono truncate block"
-                title={COLORTAG_CONTRACT_ADDRESS}
+                className="text-purple-400 hover:text-purple-300 hover:underline font-medium text-xs flex items-center space-x-1"
+                title="View Verified Contract on Botchain Mainnet Explorer"
               >
-                {COLORTAG_CONTRACT_ADDRESS.slice(0, 6)}...{COLORTAG_CONTRACT_ADDRESS.slice(-4)}
+                <span>BotchainScan</span>
+                <ExternalLink className="w-3 h-3 text-purple-400" />
               </a>
             </div>
           </div>
